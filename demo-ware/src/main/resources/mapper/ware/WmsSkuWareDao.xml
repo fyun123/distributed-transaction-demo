@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.whut.demo.ware.dao.WmsSkuWareDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.whut.demo.ware.entity.WmsSkuWareEntity" id="wmsSkuWareMap">
+        <result property="id" column="id"/>
+        <result property="skuId" column="sku_id"/>
+        <result property="stock" column="stock"/>
+        <result property="stockLocked" column="stock_locked"/>
+    </resultMap>
+    <update id="lockStock">
+        UPDATE `wms_sku_ware` SET stock_locked=stock_locked+#{num} WHERE sku_id=#{skuId} AND stock-stock_locked>=#{num}
+    </update>
+    <update id="unlockStock">
+        UPDATE `wms_sku_ware` SET stock_locked=stock_locked-#{skuNum} WHERE sku_id=#{skuId}
+    </update>
+
+
+</mapper>

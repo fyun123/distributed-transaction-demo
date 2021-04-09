@@ -1,0 +1,25 @@
+server:
+  port: 6200
+
+spring:
+  application:
+    name: demo-product
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+  redis:
+    host: 10.138.213.16
+
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://10.138.213.16:3306/demo_pms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto

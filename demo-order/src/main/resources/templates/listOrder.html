@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+</head>
+<body>
+<div class="ui container">
+    <div class="ui grid center aligned" style="margin-top: 15em">
+        <div class="three wide column" id="index">
+            <button class="ui button center aligned">首页</button>
+        </div>
+        <div class="six wide column" style="color: red">[[${msg != null ? msg :''}]]</div>
+        <div class="three wide column" id="MyCart">
+            <button class="ui button center aligned">我的购物车</button>
+        </div>
+    </div>
+    <div class="ui grid center aligned" style="margin-top: 3em">
+        <div class="ui " style="width: 150em" th:each="order : ${orders}">
+            <h4 class="ui horizontal divider header">
+                <div>订单号：[[${order.bizOrderId}]]&nbsp;&nbsp;&nbsp;&nbsp;支付：￥[[${order.payment}]]</div>
+            </h4>
+            <div class="ui stackable center aligned grid" style="margin-top: 1em;margin-bottom: 1em">
+                <div class="five wide column">
+                    <div class="ui grid center aligned" th:each="item : ${order.orderItemEntities}">
+                        <div class="seven wide column">[[${item.skuName}]]<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>x[[${item.skuNum}]]
+                        </div>
+                        <div class="five wide column">￥[[${item.amount}]]</div>
+                    </div>
+                </div>
+                <div class="seven wide column middle aligned">
+                    <div class="ui grid center aligned">
+                        <div class="three wide column">
+                            <div style="color:#71B247;" th:if="${order.orderStatus == 0}">待付款</div>
+                            <div style="color:#71B247;" th:if="${order.orderStatus == 1}">已付款</div>
+                            <div style="color:#71B247;" th:if="${order.orderStatus == 2}">已取消</div>
+                        </div>
+                        <div class="nine wide column">
+                            <div class="ui grid center aligned" th:if="${order.orderStatus == 0}">
+                                <div class="six wide column ">
+                                    <form action="http://order.demo.com:6100/toPay">
+                                        <input type="hidden" name="bizOrderId" th:value="${order.bizOrderId}">
+                                        <button style="color:#71B247;" type="submit" id="toPay">去支付</button>
+                                    </form>
+                                </div>
+                                <div class="six wide column ">
+                                    <form action="http://order.demo.com:6100/toCancel">
+                                        <input type="hidden" name="bizOrderId" th:value="${order.bizOrderId}">
+                                        <button style="color:#71B247;" id="toCancel">取消订单</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="ui grid center aligned" th:if="${order.orderStatus == 1}">
+                                <div class="twelve wide column">
+                                    <form action="#" th:if="${order.orderStatus == 1}">
+                                        <button style="color:#71B247;">评价</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="ui grid center aligned" th:if="${order.orderStatus == 2}">
+                                <div class="twelve wide column">
+                                    <form action="http://product.demo.com:6200" th:if="${order.orderStatus == 2}">
+                                        <button style="color:#71B247;">再次购买</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    $("#index").click(function () {
+        location.href = "http://product.demo.com:6200"
+        return false;
+    });
+    $("#MyCart").click(function () {
+        location.href = "http://order.demo.com:6100/confirmOrder";
+        return false;
+    });
+
+</script>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+</head>
+<body>
+<div class="ui container">
+    <div class="ui grid center aligned" style="margin-top: 20em">
+        <div class="three wide column" id="MyCart">
+            <button class="ui button">我的购物车</button>
+        </div>
+        <div class="three wide column"></div>
+        <div class="three wide column"></div>
+        <div class="three wide column" id="MyOrder">
+            <button class="ui button">我的订单</button>
+        </div>
+    </div>
+    <div class="ui grid center aligned">
+        <div class="ui">首页</div>
+    </div>
+    <div class="ui grid center aligned">
+        <div class="three wide column"></div>
+        <div class="three wide column">商品名称</div>
+        <div class="three wide column">价格</div>
+        <div class="three wide column">购买数量</div>
+    </div>
+    <div class="ui grid center aligned" th:each="item : ${cartVo.items}">
+        <div class="ui three wide column">
+            <input type="checkbox" class="itemCheck" th:attr="skuId=${item.skuId}"
+                   th:checked="${item.check}"/>
+        </div>
+        <div class="three wide column">[[${item.skuName}]]</div>
+        <div class="three wide column">[[${item.skuPrice}]]</div>
+        <div class="three wide column">
+            <div class="ui buttons cart-items" th:attr="skuId=${item.skuId}">
+                <button class="ui round right corner  button countSubBtn" style="width: 50px;height: 37px">
+                    -
+                </button>
+                <span class="ui input  basic label" style="width: 50px;height: 37px"
+                      th:text="${item.num}"></span>
+                <button class="ui round right corner  button countAddBtn" style="width: 50px;height: 37px">
+                    +
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="ui grid center aligned">
+        <div class="ui six wide column"></div>
+        <div class="ui three wide column">总价：[[${cartVo.totalAmount}]]</div>
+        <div class="ui three wide column button" id="purchase">购买</div>
+    </div>
+
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+
+    $(".itemCheck").click(function () {
+        var skuId = $(this).attr("skuId");
+        var check = $(this).prop("checked");
+        location.href = "http://product.demo.com:6200/checkItem?skuId=" + skuId + "&check=" + (check ? 1 : 0);
+    });
+    $(".countAddBtn").click(function () {
+        var skuId = $(this).parent().attr("skuId");
+        location.href = "http://product.demo.com:6200/countAdd?skuId=" + skuId;
+    });
+    $(".countSubBtn").click(function () {
+        var skuId = $(this).parent().attr("skuId");
+        location.href = "http://product.demo.com:6200/countSub?skuId=" + skuId;
+    });
+    $("#purchase").click(function () {
+        location.href = "http://order.demo.com:6100/confirmOrder";
+    });
+    $("#index").click(function () {
+        location.href = "http://product.demo.com:6200";
+        return false;
+    })
+    $("#MyOrder").click(function () {
+        location.href = "http://order.demo.com:6100/listOrder";
+        return false;
+    });
+    $("#MyCart").click(function () {
+        location.href = "http://order.demo.com:6100/confirmOrder";
+        return false;
+    })
+
+
+</script>
+</html>

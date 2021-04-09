@@ -1,0 +1,35 @@
+server:
+  port: 6300
+
+spring:
+  application:
+    name: demo-ware
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://10.138.213.16:3306/demo_wms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  rabbitmq:
+    host: 10.138.213.16
+    port: 5672
+    virtual-host: /
+    publisher-confirm-type: correlated  # 开启发送端确认
+    publisher-returns: true # 开启发送端消息抵达队列的确认
+    template:
+      mandatory: true # 只有抵达队列，以异步发送优先回调returnCallback
+    listener:
+      simple:
+        acknowledge-mode: manual # 手动ack消息
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto

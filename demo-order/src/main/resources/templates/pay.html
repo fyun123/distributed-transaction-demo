@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+</head>
+<body>
+<div class="ui container">
+    <div class="ui grid center aligned" style="margin-top: 20em">
+        <div class="four wide column" id="index">
+            <button class="ui button">首页</button>
+        </div>
+        <div class="four wide column" style="color: red">[[${msg !=null ? msg : '' }]]</div>
+        <div class="four wide column" id="MyOrder">
+            <button class="ui button">我的订单</button>
+        </div>
+    </div>
+    <div class="ui grid center aligned" >
+        <span th:if="${submitOrderResp != null}">订单提交成功，请尽快付款！订单号：[[${submitOrderResp.order.bizOrderId}]]</span>
+        <span th:if="${order != null}">订单号：[[${order.bizOrderId}]]</span>
+    </div>
+
+    <div class="ui grid center aligned">
+        <div class="four wide column">
+            <span th:if="${submitOrderResp != null}">应付金额：[[${#numbers.formatDecimal(submitOrderResp.order.payment,1,2)}]]元</span>
+            <span th:if="${order != null}">应付金额：[[${#numbers.formatDecimal(order.payment,1,2)}]]元</span>
+        </div>
+        <div class="four wide column">
+            <form action="http://order.demo.com:6100/pay">
+                <input type="hidden" name="bizOrderId" th:if="${submitOrderResp != null}" th:value="${submitOrderResp.order.bizOrderId}">
+                <input type="hidden" name="bizOrderId" th:if="${order != null}" th:value="${order.bizOrderId}">
+                <label>
+                    <input name="payedMoney">
+                </label>
+                <button type="submit">支付</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    $("#index").click(function () {
+        location.href = "http://product.demo.com:6200";
+        return false;
+    });
+    $("#MyOrder").click(function () {
+        location.href = "http://order.demo.com:6100/listOrder";
+        return false;
+    });
+
+</script>
+</html>
